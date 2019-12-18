@@ -2,9 +2,15 @@ import React from "react";
 import axios from "axios";
 import MovieCard from "./MovieCard";
 import { UpdateMovie } from "../UpdateMovie";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  withRouter,
+  Redirect
+} from "react-router-dom";
 
-export default class Movie extends React.Component {
+class Movie extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,6 +35,10 @@ export default class Movie extends React.Component {
       .catch(err => console.log(err.response));
   };
 
+  movieState = data => {
+    this.setState({ movie: data });
+  };
+
   saveMovie = () => {
     const addToSavedList = this.props.addToSavedList;
     addToSavedList(this.state.movie);
@@ -37,6 +47,21 @@ export default class Movie extends React.Component {
   //   getCurrentMovie = () => {
   //   return this.state.movie.find(amovie=>amovie.id===currentMovieId)
   // }
+
+  getMovie = () => {
+    axios
+      .get("http://localhost:5000/api/movies")
+      .then(res => this.setState({ movies: res.data }))
+      .catch(err => console.log(err.response));
+  };
+
+  deleteMovie = id => {
+    axios
+      .delete(`http://localhost:5000/api/movies/${id}`)
+      .then(res => this.fetchMovie())
+      .catch(err => console.log(err));
+    this.props.history.push("/");
+  };
 
   render() {
     if (!this.state.movie) {
@@ -64,6 +89,8 @@ export default class Movie extends React.Component {
                 {...props}
                 movie={this.state.movie}
                 fetchMovie={this.fetchMovie}
+                movieState={this.movieState}
+                deleteMovie={this.deleteMovie}
               />
             );
           }}
@@ -75,3 +102,5 @@ export default class Movie extends React.Component {
     );
   }
 }
+
+export default withRouter(Movie);
