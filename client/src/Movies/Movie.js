@@ -48,12 +48,12 @@ class Movie extends React.Component {
   //   return this.state.movie.find(amovie=>amovie.id===currentMovieId)
   // }
 
-  getMovie = () => {
-    axios
-      .get("http://localhost:5000/api/movies")
-      .then(res => this.setState({ movies: res.data }))
-      .catch(err => console.log(err.response));
-  };
+  // getMovie = () => {
+  //   axios
+  //     .get("http://localhost:5000/api/movies")
+  //     .then(res => this.setState({ movies: res.data }))
+  //     .catch(err => console.log(err.response));
+  // };
 
   deleteMovie = id => {
     axios

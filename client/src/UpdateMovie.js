@@ -9,35 +9,23 @@ import {
 
 export const UpdateMovie = props => {
   const [currentMovieId, setCurrentMovieId] = useState(props.movie.id);
-  console.log("CONSOLE OUTPUT: props.movie.id", props.movie);
+  // console.log("CONSOLE OUTPUT: props.movie.id", props.movie);
 
-  const UpdateMoviePut = ({ id, title, director, metascore, actors }) => {
-    Axios.put(`localhost:5000/api/movies/${id}`, {
-      title,
-      director,
-      metascore,
-      actors
-    })
-      .then(res => {
-        setCurrentMovieId(null);
-        props.fetchMovie();
-      })
-      .catch(err => console.log(err));
-  };
-
-  const getMovies = () => {
-    Axios.get(`http://localhost:5000/api/movies/`)
-      .then(res => props.movieSate(res.data))
-      .catch(err => console.log(err.response));
-  };
+  // const getMovies = () => {
+  //   Axios.get(`http://localhost:5000/api/movies/`)
+  //     .then(res => props.movieSate(res.data))
+  //     .catch(err => console.log(err.response));
+  // };
 
   const [formValues, setFormValues] = useState({
-    title: props.movie.title,
-    director: props.movie.director,
-    metascore: props.movie.metascore,
-    stars: props.movie.stars
+    id: props.movie.id,
+    title: "",
+    director: "",
+    metascore: 0,
+    stars: ["qqqqqqr", "aaaa", "sssr", "ererer"]
   });
 
+  console.log(formValues);
   const onValueChange = event => {
     setFormValues({
       ...formValues,
@@ -45,9 +33,21 @@ export const UpdateMovie = props => {
     });
   };
 
+  const UpdateMoviePut = (id, event) => {
+    event.preventDefault();
+
+    Axios.put(`http://localhost:5000/api/movies/${id}`, formValues)
+      .then(res => {
+        // setCurrentMovieId(null);
+        props.fetchMovie();
+        console.log(res.data);
+      })
+      .catch(err => console.log("NOT WORKING", err));
+  };
+  console.log(UpdateMoviePut);
   return (
     <div>
-      <form onSubmit={null}>
+      <form onSubmit={event => UpdateMoviePut(formValues.id, event)}>
         <input
           type="text"
           placeholder="title"
@@ -76,7 +76,7 @@ export const UpdateMovie = props => {
           onChange={onValueChange}
           name="stars"
         />
-        <button style={{ marginBottom: "30px" }}>
+        <button style={{ marginBottom: "30px" }} type="submit">
           Update this movie's infos
         </button>
         <button onClick={() => props.deleteMovie(props.movie.id)}>
