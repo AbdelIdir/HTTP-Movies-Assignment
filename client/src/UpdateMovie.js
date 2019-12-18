@@ -22,7 +22,7 @@ export const UpdateMovie = props => {
     title: "",
     director: "",
     metascore: 0,
-    stars: ["qqqqqqr", "aaaa", "sssr", "ererer"]
+    stars: ["qqqqqqr", "aaaa", "sssr", "ed"]
   });
 
   console.log(formValues);
