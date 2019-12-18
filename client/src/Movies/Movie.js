@@ -1,6 +1,9 @@
 import React from "react";
 import axios from "axios";
 import MovieCard from "./MovieCard";
+import { UpdateMovie } from "../UpdateMovie";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
 export default class Movie extends React.Component {
   constructor(props) {
     super(props);
@@ -31,6 +34,10 @@ export default class Movie extends React.Component {
     addToSavedList(this.state.movie);
   };
 
+  //   getCurrentMovie = () => {
+  //   return this.state.movie.find(amovie=>amovie.id===currentMovieId)
+  // }
+
   render() {
     if (!this.state.movie) {
       return <div>Loading movie information...</div>;
@@ -38,7 +45,29 @@ export default class Movie extends React.Component {
 
     return (
       <div className="save-wrapper">
-        <MovieCard movie={this.state.movie} />
+        <Link
+          style={{
+            border: "2px solid black",
+            borderRadius: "5px",
+            padding: "5px"
+          }}
+          to={`/movies/${this.state.movie.id}/update-movie/${this.state.movie.id}`}
+        >
+          Update this movie
+        </Link>
+        <MovieCard movie={this.state.movie} fetchMovie={this.fetchMovie} />
+        <Route
+          path={`/movies/:id/update-movie/:id`}
+          render={props => {
+            return (
+              <UpdateMovie
+                {...props}
+                movie={this.state.movie}
+                fetchMovie={this.fetchMovie}
+              />
+            );
+          }}
+        />
         <div className="save-button" onClick={this.saveMovie}>
           Save
         </div>
