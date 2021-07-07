@@ -22,7 +22,7 @@ export const UpdateMovie = props => {
     title: "",
     director: "",
     metascore: 0,
-    stars: ["qqqqqqr", "aaaa", "sssr", "ererer"]
+    stars: [props.movie.stars]
   });
 
   console.log(formValues);
@@ -33,6 +33,17 @@ export const UpdateMovie = props => {
     });
   };
 
+  const deleteMovie = id => {
+    Axios.delete(`http://localhost:5000/api/movies/${id}`)
+      .then(res => {
+        props.fetchMovie();
+        props.history.push("/");
+        console.log(res.data);
+      })
+
+      .catch(err => console.log(err));
+  };
+
   const UpdateMoviePut = (id, event) => {
     event.preventDefault();
 
@@ -41,6 +52,7 @@ export const UpdateMovie = props => {
         // setCurrentMovieId(null);
         props.fetchMovie();
         console.log(res.data);
+        props.history.push("/");
       })
       .catch(err => console.log("NOT WORKING", err));
   };
@@ -79,7 +91,7 @@ export const UpdateMovie = props => {
         <button style={{ marginBottom: "30px" }} type="submit">
           Update this movie's infos
         </button>
-        <button onClick={() => props.deleteMovie(props.movie.id)}>
+        <button onClick={() => deleteMovie(props.movie.id)}>
           Delete this movie
         </button>
       </form>

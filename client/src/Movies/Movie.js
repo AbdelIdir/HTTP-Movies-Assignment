@@ -55,13 +55,7 @@ class Movie extends React.Component {
   //     .catch(err => console.log(err.response));
   // };
 
-  deleteMovie = id => {
-    axios
-      .delete(`http://localhost:5000/api/movies/${id}`)
-      .then(res => this.fetchMovie())
-      .catch(err => console.log(err));
-    this.props.history.push("/");
-  };
+
 
   render() {
     if (!this.state.movie) {
